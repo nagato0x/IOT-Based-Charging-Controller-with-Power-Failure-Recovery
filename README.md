@@ -7,7 +7,7 @@ The **Smart E-Bike Charging Controller** is an IoT-enabled embedded system desig
 
 The system is designed as a **low-cost and reliable charging automation solution** with both online and offline operating capabilities. It controls the AC supply to an e-bike charger using a relay interface while implementing intelligent timer management to prevent unnecessary charging beyond the required duration.
 
-A major design consideration of this project was the **limited GPIO availability of the ESP8266 ESP-01 module**. Compared with development boards such as NodeMCU or ESP32, the ESP-01 provides only a small number of accessible pins, making integration of additional peripherals more challenging. 
+A major design consideration of this project was the **limited GPIO availability of the ESP8266 ESP-01 module**. Compared with development boards such as NodeMCU or ESP32, the ESP-01 provides only a small number of accessible pins, making integration of additional peripherals more challenging.
 
 To overcome this limitation, two different power recovery approaches were developed:
 
@@ -91,7 +91,6 @@ The system supports both **offline autonomous operation** and **online IoT contr
 * Relay driver circuit
 * Single-channel relay module
 
-
 ---
 
 # ⚙️ System Architecture
@@ -112,19 +111,17 @@ The system supports both **offline autonomous operation** and **online IoT contr
 
 ---
 
-
-
 # 🔧 Hardware Design
 
 <img width="1051" height="598" alt="image" src="https://github.com/user-attachments/assets/277bdf01-d632-4552-aa46-fbddb040564c" />
 
-# PCB Design 
+# PCB Design
 
 <img width="1093" height="656" alt="image" src="https://github.com/user-attachments/assets/a4eead6c-517f-4f2c-b2d4-ff97cd25ed80" />
 
 <img width="1338" height="738" alt="image" src="https://github.com/user-attachments/assets/02d70a4d-440f-4184-ab41-4296201adf16" />
 
-# Hardware Implementation 
+# Hardware Implementation
 
 <img width="360" height="640" alt="axxe6i" src="https://github.com/user-attachments/assets/abf24751-7171-4b17-bbf0-a448142bcde9" />
 
@@ -260,6 +257,8 @@ During operation, the controller periodically stores:
 * Timer status
 * Charging session information
 
+To reduce flash memory wear on the ESP8266 ESP-01, the charging state is not written continuously. Instead, the remaining charging time and system state are stored at **1-hour intervals**. This approach reduces unnecessary flash write cycles while still providing sufficient recovery accuracy after a power failure.
+
 After a power failure:
 
 1. ESP8266 restarts
@@ -271,12 +270,15 @@ After a power failure:
 
 ## Flash Recovery Optimization
 
-To reduce unnecessary flash wear:
+To increase the lifetime of the ESP8266 internal flash memory:
 
 * Data is not saved continuously
-* Periodic saving intervals are used
+* Timer state is stored at **1-hour intervals**
 * Only required variables are stored
+* Flash write operations are minimized
 * Stored data is validated before restoration
+
+The 1-hour storage interval provides a balance between **power failure recovery accuracy** and **flash memory endurance**, preventing excessive write cycles during normal charging operation.
 
 ---
 
@@ -373,6 +375,7 @@ Smart-Ebike-Charging-Controller/
 * IoT-based e-bike charging automation
 * ESP-01 GPIO limitation analysis and optimization
 * Flash memory-based persistent timer storage
+* 1-hour interval flash writing strategy for improved flash endurance
 * RTC-based backup timekeeping
 * Fault-tolerant charging control
 * Wi-Fi communication and cloud integration
@@ -424,3 +427,5 @@ University of Jaffna
 
 This project is released under the **MIT License**.
 
+```
+```
