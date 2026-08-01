@@ -12,10 +12,10 @@ A major design consideration of this project was the **limited GPIO availability
 To overcome this limitation, two different power recovery approaches were developed:
 
 1. **RTC-Based Recovery Version**  
-   Uses an external **DS3231 Real-Time Clock (RTC)** module for accurate time tracking during power interruptions.
+   Uses an external **DS3231 Real-Time Clock (RTC)** module for accurate time tracking during power interruptions. Which can be easily implemented on other ESP models.
 
 2. **Flash Memory-Based Recovery Version**  
-   Uses the ESP8266's internal flash memory to periodically store charging progress and restore the timer state after a power failure without requiring additional hardware.
+   Uses the ESP8266's internal flash memory to periodically store charging progress and restore the timer state after a power failure without requiring additional hardware. This approach was chosen for the ESP8266 due to its lack of pins.
 
 Both approaches ensure that charging resumes correctly after unexpected power interruptions, preventing timer resets and reducing the risk of overcharging.
 
